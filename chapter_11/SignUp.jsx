@@ -16,7 +16,7 @@ function SignUp(props) {
         alert(`이름: ${name}, 성별: ${gender}`);
         event.preventDefault();
     };
-
+    // test 로 작성한 주석입니다
     return (
         <form onSubmit={handleSubmit}>
             <label>
