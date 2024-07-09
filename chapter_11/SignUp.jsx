@@ -11,6 +11,7 @@ function SignUp(props) {
     const handleChangeGender = (event) => {
         setGender(event.target.value);
         // 여기서 충돌이 나야하는거지?
+        // GIT 오류를 한 번 내보자 같은 데를 건들었다
     };
 
     const handleSubmit = (event) => {
