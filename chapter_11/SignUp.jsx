@@ -7,7 +7,7 @@ function SignUp(props) {
     const handleChangeName = (event) => {
         setName(event.target.value);
     };
-
+    // GIT 오류를 한 번 내보자
     const handleChangeGender = (event) => {
         setGender(event.target.value);
     };
