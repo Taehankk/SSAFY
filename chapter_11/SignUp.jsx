@@ -10,6 +10,7 @@ function SignUp(props) {
     // GIT 오류를 한 번 내보자
     const handleChangeGender = (event) => {
         setGender(event.target.value);
+        // 여기서 충돌이 나야하는거지?
     };
 
     const handleSubmit = (event) => {
