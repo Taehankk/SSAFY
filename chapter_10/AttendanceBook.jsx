@@ -1,5 +1,5 @@
 import React from "react";
-
+// 학생 목록입니다.
 const students = [
     {
         id: 1,
