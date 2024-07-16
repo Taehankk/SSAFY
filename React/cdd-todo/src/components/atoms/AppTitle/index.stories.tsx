@@ -5,18 +5,23 @@ import { AppTitle } from ".";
 const meta: Meta<typeof AppTitle> = {
     title: "Atoms/AppTitle",
     component: AppTitle,
+    decorators: [
+        (Story) => (
+            <BrowserRouter>
+                <Story />
+            </BrowserRouter>
+        ),
+    ],
+    parameters: {
+        backgrounds: {
+            default: "Header background color",
+            values: [{ name: "Header background color", value: "#304ffe" }],
+        },
+    },
 };
 
 export default meta;
 
 type Story = StoryObj<typeof AppTitle>;
 
-const Template: Story = {
-    render: () => {
-        <BrowserRouter>
-            <AppTitle />
-        </BrowserRouter>;
-    },
-};
-
-export const Default = Template.bind({}): 
+export const Default: Story = {};
