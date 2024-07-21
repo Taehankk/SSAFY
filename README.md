@@ -1,3 +1,3 @@
 # SSAFY
 
-GIT 을 공부를 해보자
+React를 공부를 해보자
