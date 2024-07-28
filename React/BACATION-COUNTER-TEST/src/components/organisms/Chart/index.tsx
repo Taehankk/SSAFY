@@ -4,6 +4,7 @@ import {
   VictoryPolarAxis,
   VictoryBar,
   VictoryTheme,
+  VictoryLegend,
 } from 'victory';
 import { TimeData } from '../ChartModal';
 import { addMinutes, differenceInMinutes } from 'date-fns';
@@ -38,6 +39,14 @@ export const ChartData = () => {
           startAngle={90}
           endAngle={-270}
         >
+          <VictoryLegend
+            style={{ border: { stroke: 'black' } }}
+            data={[
+              { name: '수면', symbol: { fill: '#3864A7' } },
+              { name: '활동', symbol: { fill: '#FDDC3F' } },
+              { name: '수유', symbol: { fill: '#F2B6C6' } },
+            ]}
+          />
           <VictoryPolarAxis
             tickValues={[0, 3, 6, 9, 12, 15, 18, 21]}
             labelPlacement="vertical"
@@ -60,10 +69,10 @@ export const ChartData = () => {
               data: {
                 fill: ({ datum }) =>
                   datum.detectId === 0
-                    ? '#4CAF50'
+                    ? '#3864A7'
                     : datum.detectId === 1
-                      ? '#FFC107'
-                      : '#2196F3',
+                      ? '#FDDC3F'
+                      : '#F2B6C6',
                 width: ({ datum }) => (datum.time / 24) * 400,
               },
             }}

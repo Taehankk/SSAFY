@@ -9,43 +9,41 @@ export const TimeData = () => {
   const setIndex = useCountStore((state) => state.setActiveIndex);
 
   const data = useCountStore((state) => state.axiosData[index]);
+  const fetchData = useCountStore((state) => state.setAxiosData);
 
-  const [sleepChecked, setSleepChecked] = useState(data.detectId === 0);
-  const [activeChecked, setActiveChecked] = useState(data.detectId === 1);
-  const [feedChecked, setFeedChecked] = useState(data.detectId === 2);
+  const [checked, setChecked] = useState(data.detectId);
 
-  // if (data.detectId === 0) {
-  //   setSleepChecked(true);
-  // } else if (data.detectId === 1) {
-  //   setActiveChecked(true);
-  // } else if (data.detectId === 2) {
-  //   setFeedChecked(true);
-  // }
+  const [startTimeValue, setStartTimeValue] = useState(data.startTime);
+  const [finishTimeValue, setFinishTimeValue] = useState(data.finishTime);
 
-  const updateCategory = () => {};
+  const updateCategory = () => {
+    fetchData(index, {
+      startTime: startTimeValue,
+      finishTime: finishTimeValue,
+      detectId: checked,
+      detect: data.detect,
+    });
+    setIndex(null);
+  };
 
   const closeModal = () => {
     setIndex(null);
   };
 
   const onChangeCheck = (index: string) => {
-    if (index === '0') {
-      setSleepChecked(!sleepChecked);
-    } else if (index === '1') {
-      setActiveChecked(!activeChecked);
-    } else {
-      setFeedChecked(!feedChecked);
-    }
+    setChecked(Number(index));
   };
 
   const changeStartTime = (time: string) => {
-    // setStartTimeValue(time);
-    console.log(time);
+    const [hours, minutes] = time.split(':');
+    setStartTimeValue(new Date(2024, 7, 27, Number(hours), Number(minutes)));
+    console.log(startTimeValue);
   };
 
   const changeFinishTime = (time: string) => {
-    // setFinishTimeValue(time);
-    console.log(time);
+    const [hours, minutes] = time.split(':');
+    setFinishTimeValue(new Date(2024, 7, 27, Number(hours), Number(minutes)));
+    console.log(finishTimeValue);
   };
 
   return (
@@ -70,7 +68,7 @@ export const TimeData = () => {
             <input
               id="0"
               type="checkbox"
-              checked={sleepChecked}
+              checked={checked === 0}
               onChange={({ target: { id } }) => onChangeCheck(id)}
             />
             <span>수면</span>
@@ -79,7 +77,7 @@ export const TimeData = () => {
             <input
               id="1"
               type="checkbox"
-              checked={activeChecked}
+              checked={checked === 1}
               onChange={({ target: { id } }) => onChangeCheck(id)}
             />
             <span>활동</span>
@@ -88,7 +86,7 @@ export const TimeData = () => {
             <input
               id="2"
               type="checkbox"
-              checked={feedChecked}
+              checked={checked === 2}
               onChange={({ target: { id } }) => onChangeCheck(id)}
             />
             <span>수유</span>
@@ -102,12 +100,12 @@ export const TimeData = () => {
         <div className="flex items-center space-x-2">
           <TimePicker
             onChange={(value) => changeStartTime(value)}
-            value={data.startTime}
+            value={startTimeValue}
           />
           <span>~</span>
           <TimePicker
             onChange={(value) => changeFinishTime(value)}
-            value={data.finishTime}
+            value={finishTimeValue}
           />
         </div>
       </div>

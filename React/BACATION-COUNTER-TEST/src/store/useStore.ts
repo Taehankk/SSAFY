@@ -11,7 +11,7 @@ interface Store {
   count: number;
   setCount: (num: number) => void;
   axiosData: Data[];
-  // setAxiosData: () => void;
+  setAxiosData: (index: number, data: Data) => void;
   activeIndex: number | null;
   setActiveIndex: (num: number | null) => void;
 }
@@ -69,6 +69,10 @@ const useCountStore = create<Store>((set) => ({
       detect: '활동',
     },
   ],
+  setAxiosData: (index, data) =>
+    set((state) => ({
+      axiosData: state.axiosData.map((d, i) => (i === index ? data : d)),
+    })),
   activeIndex: null,
   setActiveIndex: (num) => set(() => ({ activeIndex: num })),
 }));
