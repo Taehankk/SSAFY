@@ -1,14 +1,11 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
-import { Home } from './components/pages/Home';
-import { DataPage } from './components/pages/DataPage';
+import { DataPage } from './pages/dataPage';
 
 function App() {
   return (
     <div>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
           <Route path="/data" element={<DataPage />} />
         </Routes>
       </BrowserRouter>

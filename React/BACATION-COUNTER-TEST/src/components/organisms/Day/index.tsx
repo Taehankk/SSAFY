@@ -104,47 +104,40 @@ const Day = () => {
     <div className="flex justify-center">
       <div
         ref={scrollAreaRef}
-        className="h-36 w-96 sm flex justify-center items-center"
+        className="w-full sm:w-auto flex justify-center items-center overflow-x-auto"
       >
-        <div
-          className="flex flex-row-reverse items-center overflow-auto"
-          style={{
-            maxHeight: '80%',
-            padding: '0 1rem',
-            maxWidth: '1200px',
-          }}
-        >
-          <div className="text-center bg-white p-2 rounded shadow mx-1 w-40px h-90px">
+        <div className="flex flex-row-reverse items-center max-h-80% p-4 max-w-screen-lg">
+          <div className="text-center bg-white p-2 rounded shadow mx-1 w-16 h-24 sm:w-20 sm:h-28 lg:w-24 lg:h-32">
             <span className="block"> </span>
             <span className="block"> </span>
             <span className="block"> </span>
           </div>
-          <div className="text-center bg-white p-2 rounded shadow mx-1">
+          <div className="text-center bg-white p-2 rounded shadow mx-1 w-16 h-24 sm:w-20 sm:h-28 lg:w-24 lg:h-32">
             <span className="block"></span>
             <span className="block"></span>
             <span className="block"></span>
           </div>
-          <div className="text-center bg-white p-2 rounded shadow mx-1">
+          <div className="text-center bg-white p-2 rounded shadow mx-1 w-16 h-24 sm:w-20 sm:h-28 lg:w-24 lg:h-32">
             <span className="block"></span>
             <span className="block"></span>
             <span className="block"></span>
           </div>
-          <div className="text-center bg-white p-2 rounded shadow mx-1">
+          <div className="text-center bg-white p-2 rounded shadow mx-1 w-16 h-24 sm:w-20 sm:h-28 lg:w-24 lg:h-32">
             <span className="block"></span>
             <span className="block"></span>
             <span className="block"></span>
           </div>
-          <div className="text-center bg-white p-2 rounded shadow mx-1">
+          <div className="text-center bg-white p-2 rounded shadow mx-1 w-16 h-24 sm:w-20 sm:h-28 lg:w-24 lg:h-32">
             <span className="block"></span>
             <span className="block"></span>
             <span className="block"></span>
           </div>
-          <div className="text-center bg-white p-2 rounded shadow mx-1">
+          <div className="text-center bg-white p-2 rounded shadow mx-1 w-16 h-24 sm:w-20 sm:h-28 lg:w-24 lg:h-32">
             <span className="block"></span>
             <span className="block"></span>
             <span className="block"></span>
           </div>
-          <div className="text-center bg-white p-2 rounded shadow mx-1">
+          <div className="text-center bg-white p-2 rounded shadow mx-1 w-16 h-24 sm:w-20 sm:h-28 lg:w-24 lg:h-32">
             <span className="block"></span>
             <span className="block"></span>
             <span className="block"></span>
@@ -152,7 +145,7 @@ const Day = () => {
           {dateArr.map((date, idx) => (
             <div
               key={idx}
-              className="text-center bg-white p-2 rounded shadow mx-1"
+              className="text-center bg-white p-2 rounded shadow mx-1 w-16 h-24 sm:w-20 sm:h-28 lg:w-24 lg:h-32"
               onClick={() => selectDate(date)}
             >
               <span className="block">{format(date, 'E')}</span>
