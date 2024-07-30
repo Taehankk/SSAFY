@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { DayData } from '../../components/templates/dayData';
-import { DataDetail } from '../../components/templates/dataDetail';
+import { AnalysisData } from '../../components/organisms/analysisData';
 
 export const DataPage = () => {
   const [checked, setChecked] = useState('0');
@@ -11,18 +11,21 @@ export const DataPage = () => {
 
   return (
     // <div className="container mx-auto p-4">
-    <div className="w-screen h-screen relative bg-white">
-      <div className="flex mb-4 justify-center items-center">
+    <div className="w-screen h-screen p-1 relative bg-white">
+      <div className="my-2">
+        <p>◀ 기록된 데이터 보기</p>
+      </div>
+      <div className="flex h-10 mb-4 justify-center items-center border-2 border-orgBg1 rounded-2xl">
         <div
           id={'0'}
-          className={`rounded-t-md md:rounded-l-md md:rounded-r-none px-4 py-2 cursor-pointer ${checked === '0' ? 'bg-orange-100 text-orange-500' : 'bg-white text-gray-500'}`}
+          className={`w-full h-9 text-center rounded-xl px-4 py-2 cursor-pointer ${checked === '0' ? 'bg-orgBg1 text-orange-600 text font-extrabold' : 'bg-white text-gray-500'}`}
           onClick={({ target }) => onClick(target.id)}
         >
           일별 데이터
         </div>
         <div
           id={'1'}
-          className={`rounded-b-md md:rounded-r-md md:rounded-l-none px-4 py-2 cursor-pointer ${checked === '1' ? 'bg-orange-100 text-orange-500' : ' bg-white text-gray-500'}`}
+          className={`w-full h-9 text-center rounded-xl px-4 py-2 cursor-pointer ${checked === '1' ? 'bg-orgBg1 text-orange-600 font-extrabold' : ' bg-white text-gray-500'}`}
           onClick={({ target }) => onClick(target.id)}
         >
           데이터 분석
@@ -30,7 +33,7 @@ export const DataPage = () => {
       </div>
       <div>
         {checked === '0' && <DayData />}
-        {checked === '1' && <DataDetail />}
+        {checked === '1' && <AnalysisData />}
       </div>
     </div>
   );

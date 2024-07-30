@@ -10,8 +10,14 @@ interface Data {
 interface Store {
   axiosData: Data[];
   setAxiosData: (index: number, data: Data) => void;
+  tempArr: Date[];
+  setTempArr: (dateArr: Date[]) => void;
   activeIndex: number | null;
   setActiveIndex: (num: number | null) => void;
+  selectDate: number;
+  setSelectDate: (index: number) => void;
+  scrollY: number;
+  setScrollY: (num: number) => void;
 }
 
 const useDataStore = create<Store>((set) => ({
@@ -69,8 +75,14 @@ const useDataStore = create<Store>((set) => ({
     set((state) => ({
       axiosData: state.axiosData.map((d, i) => (i === index ? data : d)),
     })),
+  tempArr: [new Date()],
+  setTempArr: (dateArr) => set(() => ({ tempArr: dateArr })),
   activeIndex: null,
   setActiveIndex: (num) => set(() => ({ activeIndex: num })),
+  selectDate: 0,
+  setSelectDate: (idx) => set(() => ({ selectDate: idx })),
+  scrollY: 0,
+  setScrollY: (num) => set(() => ({ scrollY: num })),
 }));
 
 export default useDataStore;

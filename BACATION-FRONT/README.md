@@ -1,15 +1,3 @@
-## 기술 스택
-
-- **언어**: TypeScript
-- **프레임워크**: React
-- **스타일링**: TailwindCSS
-- **상태 관리**: Zustand
-- **서버 상태 관리**: Tanstack Query
-- **코드 포맷터**: Prettier
-- **컴포넌트 관리**: Storybook
-- **번들러**: Vite
-- **패키지 매니저**: npm
-
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
@@ -34,7 +22,7 @@ export default {
     project: ['./tsconfig.json', './tsconfig.node.json', './tsconfig.app.json'],
     tsconfigRootDir: __dirname,
   },
-};
+}
 ```
 
 - Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`

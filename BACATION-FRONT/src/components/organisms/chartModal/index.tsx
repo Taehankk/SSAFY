@@ -37,13 +37,11 @@ export const TimeData = () => {
   const changeStartTime = (time: string) => {
     const [hours, minutes] = time.split(':');
     setStartTimeValue(new Date(2024, 7, 27, Number(hours), Number(minutes)));
-    console.log(startTimeValue);
   };
 
   const changeFinishTime = (time: string) => {
     const [hours, minutes] = time.split(':');
     setFinishTimeValue(new Date(2024, 7, 27, Number(hours), Number(minutes)));
-    console.log(finishTimeValue);
   };
 
   return (

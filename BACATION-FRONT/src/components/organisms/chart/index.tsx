@@ -9,6 +9,7 @@ import { TimeData } from '../chartModal';
 import { addMinutes, differenceInMinutes } from 'date-fns';
 
 import useDataStore from '../../../store/useDataStore';
+import { Link } from 'react-router-dom';
 
 export const ChartData = () => {
   const axiosData = useDataStore((state) => state.axiosData);
@@ -28,10 +29,19 @@ export const ChartData = () => {
 
   const activeIndex = useDataStore((state) => state.activeIndex);
   const setActiveIndex = useDataStore((state) => state.setActiveIndex);
+
   return (
     // <div className="flex flex-col items-center justify-center p-4 bg-white-100 relative">
     <div className="flex items-center justify-center bg-white-100 relative">
-      <div className="bg-white p-6 rounded-lg shadow-lg">
+      <div className="bg-white p-6 rounded-lg ">
+        <div className="relative float-right -bottom-5 z-10">
+          <Link
+            className="text-black text-sm"
+            to={`/data/${new Date().getHours()}`}
+          >
+            기록 자세히 보기▶
+          </Link>
+        </div>
         <VictoryChart
           polar
           theme={VictoryTheme.material}
@@ -40,21 +50,25 @@ export const ChartData = () => {
           endAngle={-270}
         >
           <VictoryLegend
-            style={{ border: { stroke: 'black' } }}
+            x={-10}
+            y={280}
+            style={{ border: { stroke: 'none' } }}
             data={[
-              { name: '수면', symbol: { fill: '#3864A7' } },
-              { name: '활동', symbol: { fill: '#FDDC3F' } },
-              { name: '수유', symbol: { fill: '#F2B6C6' } },
+              { name: '수면', symbol: { fill: '#3864A7', type: 'square' } },
+              { name: '활동', symbol: { fill: '#FDDC3F', type: 'square' } },
+              { name: '수유', symbol: { fill: '#F2B6C6', type: 'square' } },
             ]}
           />
           <VictoryPolarAxis
             tickValues={[0, 3, 6, 9, 12, 15, 18, 21]}
             labelPlacement="vertical"
             style={{
+              // axis: { stroke: 'none' },
               tickLabels: { padding: 20 },
+              grid: { stroke: 'none' },
             }}
           />
-          {data.map((d, i) => (
+          {/* {data.map((d, i) => (
             <VictoryPolarAxis
               dependentAxis
               key={i}
@@ -62,7 +76,7 @@ export const ChartData = () => {
                 tickLabels: { fill: 'none' },
               }}
             />
-          ))}
+          ))} */}
           <VictoryBar
             data={data}
             style={{
@@ -81,7 +95,6 @@ export const ChartData = () => {
                 target: 'data',
                 eventHandlers: {
                   onClick: (event, props) => {
-                    console.log(props);
                     if (activeIndex === props.index) {
                       setActiveIndex(null);
                     } else {
