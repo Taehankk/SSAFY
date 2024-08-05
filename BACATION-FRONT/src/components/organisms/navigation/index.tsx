@@ -1,10 +1,10 @@
 import React from 'react';
 
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-// 사용할 아이콘 import
-import { faHome, faUser } from '@fortawesome/free-solid-svg-icons';
-// FontAwesomIcon 컴포넌트를 사용하기 위해 import
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import home1 from '../../../assets/navbar/home-1.png';
+import home2 from '../../../assets/navbar/home-2.png';
+import child1 from '../../../assets/navbar/child-1.png';
+import child2 from '../../../assets/navbar/child-2.png';
 
 const Navbar = () => {
   // 현재 선택된 아이콘을 관리하는 state
@@ -28,44 +28,38 @@ const Navbar = () => {
     // }
   };
   return (
-    <nav className="flex justify-evenly fixed bottom-0 left-0 right-0 h-10 max-w-[400px] mx-auto">
+    <nav className="bg-white flex justify-evenly fixed bottom-0 left-0 right-0 py-2 max-w-[400px] mx-auto">
       {/* 하단 네비게이션 최상위 태그 */}
-      <Link to="/" className="nav-link">
-        <div>
-          <FontAwesomeIcon
-            icon={faHome}
-            className={
-              locationNow.pathname === '/'
-                ? 'nav-item active-nav-item'
-                : 'nav-item'
-            }
-          />
-          {/* 네비게이션을 구성하고 있는 하나의 버튼 */}
-        </div>
+      <Link to="/main" className="">
+        {locationNow.pathname === '/main' ||
+        locationNow.pathname === '/mode/active' ||
+        locationNow.pathname === '/mode/sleep' ? (
+          <div className="grid bg-[#FD5900] px-16 py-1 rounded-2xl text-center place-items-center space-y-2">
+            <img src={home1} alt="" className="mt-1" />
+            <p className="text-white">홈</p>
+          </div>
+        ) : (
+          <div className="grid px-16 py-1 text-center place-items-center space-y-2">
+            <img src={home2} alt="" className="mt-1" />
+            <p>홈</p>
+          </div>
+        )}
       </Link>
-      <Link to="/mypage" className="nav-link">
-        <div>
-          <FontAwesomeIcon
-            icon={faUser}
-            className={
-              locationNow.pathname === '/mypage'
-                ? 'nav-item active-nav-item'
-                : 'nav-item'
-            }
-          />
-        </div>
+      <Link to="/mypage" className="">
+        {locationNow.pathname === '/mypage' ||
+        locationNow.pathname === '/data' ||
+        locationNow.pathname === '/diary' ? (
+          <div className="grid bg-[#FD5900] px-16 py-1 rounded-2xl text-center place-items-center space-y-2">
+            <img src={child1} alt="" className="mt-1" />
+            <p className="text-white">마이</p>
+          </div>
+        ) : (
+          <div className="grid px-16 py-1 text-center place-items-center space-y-2">
+            <img src={child2} alt="" className="mt-1" />
+            <p>마이</p>
+          </div>
+        )}
       </Link>
-
-      {/* <div onClick={handleConnectUser} className="nav-link">
-        <FontAwesomeIcon
-          icon="user"
-          className={
-            locationNow.pathname === '/user'
-              ? 'nav-item active-nav-item'
-              : 'nav-item'
-          }
-        />
-      </div> */}
     </nav>
   );
 };

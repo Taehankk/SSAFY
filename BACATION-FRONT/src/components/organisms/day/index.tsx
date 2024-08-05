@@ -1,15 +1,22 @@
 import { add, format } from 'date-fns';
+import { ko } from 'date-fns/locale';
 import { useEffect, useRef, useState } from 'react';
 import useDataStore from '../../../store/useDataStore';
 
 const Day = () => {
+  // 선택한 날짜 저장
   const selectDate = useDataStore((state) => state.selectDate);
   const setSelectDate = useDataStore((state) => state.setSelectDate);
 
+  // 현재 스크롤 위치값 저장
   const scrollPosition = useDataStore((state) => state.scrollY);
   const setScrollPosition = useDataStore((state) => state.setScrollY);
 
+  // 오늘 날짜 저장
   const currentDay = new Date();
+
+  // 무한 스크롤에 들어가는 날짜들
+  // 오늘 날짜 기준 이전 1주일을 미리 저장
   const [dateArr, setDateArr] = useState([
     currentDay,
     add(currentDay, { days: -1 }),
@@ -20,9 +27,12 @@ const Day = () => {
     add(currentDay, { days: -6 }),
   ]);
 
+  // 다른페이지에서 뒤로가기 눌렀을 때, 스크롤 위치 복구를 위한 날짜 저장 임시배열
   const tempArr = useDataStore((state) => state.tempArr);
   const setTempArr = useDataStore((state) => state.setTempArr);
 
+  // 임시 배열에 저장된 날짜가 1주일 이상일 때 dateArr 에 복붙
+  // 스크롤 위치 복구 안되는 경우 대비해서, 2일 정도 더 추가
   if (tempArr.length > dateArr.length) {
     setDateArr(tempArr);
     setDateArr((prevDateArr) => [
@@ -31,16 +41,21 @@ const Day = () => {
       add(tempArr[tempArr.length - 1], { days: -2 }),
     ]);
   }
+
+  // 스크롤 영역 저장 변수
   const scrollAreaRef = useRef(null);
+  // 데이터를 추가해야할 때를 체크하기위한 위치 저장 변수
   const sentinelRef = useRef(null);
 
   // 날짜를 추가하는 함수
+  // 현재까지 저장된 날짜의 이전 날을 추가
   const dateFetch = () => {
     const newDate = add(dateArr[dateArr.length - 1], { days: -1 });
     setDateArr((prevDateArr) => [...prevDateArr, newDate]);
   };
 
   // 날짜 선택 시 발동 함수
+  // 선택 시, tempArr에 선택 날짜까지 저장, 스크롤 위치 저장
   const clickDate = (event, idx: number) => {
     setSelectDate(idx);
     const position = scrollAreaRef.current.scrollLeft;
@@ -48,6 +63,7 @@ const Day = () => {
     setScrollPosition(position);
   };
 
+  // 스크롤 영역에 데이터를 추가해야하는 지 계속 감시하는 부분
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -73,25 +89,21 @@ const Day = () => {
     };
   }, [dateArr]);
 
+  // 다른 페이지에서 navigate 로 이동 시 스크롤을 유지하기 위한 함수
+  // scrollPosition에 저장된 위치를 scrollLeft 값에 저장
   useEffect(() => {
     if (scrollPosition !== 0 && scrollAreaRef.current) {
       scrollAreaRef.current.scrollLeft = scrollPosition;
     }
-    console.log(scrollPosition);
   }, [scrollPosition]);
 
   return (
-    // <div className="flex justify-center items-center h-36 mx-40">
-    <div className="flex justify-center items-center">
-      <div
-        // className="w-full h-full sm:w-auto flex justify-center items-center"
-        className="flex justify-center items-center w-2/3"
-        // className="flex overflow-x-auto h-full flex justify-center items-center"
-      >
+    <div className="w-full flex justify-center items-center">
+      <div className="flex justify-center items-center w-2/3">
+        {/* 무한 스크롤 영역 */}
         <div
           ref={scrollAreaRef}
           className="flex flex-row-reverse items-center"
-          // className="flex flex-row-reverse items-center p-4 space-x-4 space-x-reverse"
           style={{
             maxHeight: '80%',
             padding: '0 1rem',
@@ -100,10 +112,11 @@ const Day = () => {
             scrollbarWidth: 'none',
           }}
         >
+          {/* date 배열을 돌면서 날짜 형식 출력 */}
           {dateArr.map((date, idx) => (
             <div
               key={idx}
-              className={`date-item text-center h-20 flex-col content-center p-2 rounded-lg shadow mx-1 ${idx === selectDate ? 'bg-orgBg2 text-white font-bold' : ' bg-white'}`}
+              className={`date-item text-center h-24 flex-col content-center p-2 rounded-lg shadow mx-1 ${idx === selectDate ? 'bg-orgBg2 text-white font-bold' : ' bg-white'}`}
               onClick={(event) => clickDate(event, idx)}
             >
               <span className="block text-base sm:text-lg lg:text-xl">
@@ -113,10 +126,11 @@ const Day = () => {
                 {format(date, 'dd')}
               </span>
               <span className="block w-14 text-base sm:text-lg lg:text-xl">
-                {format(date, 'E')}
+                {format(date, 'E', { locale: ko })}
               </span>
             </div>
           ))}
+          {/* 스크롤의 끝에 감시하는 부분, 다 보이면 배열에 날짜 추가 */}
           <div ref={sentinelRef} className="h-4 w-full"></div>
         </div>
       </div>

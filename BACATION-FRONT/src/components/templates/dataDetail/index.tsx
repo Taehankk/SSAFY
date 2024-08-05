@@ -1,6 +1,8 @@
-import { addHours } from 'date-fns';
+import { addHours, format } from 'date-fns';
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 
 interface Detail {
   time: Date;
@@ -44,26 +46,31 @@ export const DataDetail = () => {
   };
 
   return (
-    <div className="p-4">
-      <div className="my-2" onClick={clickToBack}>
-        ◀ 기록된 데이터 보기
+    <div className="w-full">
+      <div className="flex space-x-5 py-5 mb-3 px-3">
+        <FontAwesomeIcon
+          icon={faAngleLeft}
+          className="mt-1"
+          onClick={() => navigate(-1)}
+        />
+        <p className="text-lg font-semibold">기록된 데이터 보기</p>
       </div>
-      {/* <div className="my-2">
-        <Link className="text-black text-sm" to={'/data'}>
-          ◀ 기록된 데이터 보기
-        </Link>
-      </div> */}
-      {/* 수면 중 데이터 */}
-      <div className="mb-4  text-lg sm:text-xl md:text-2xl">
+      <div className="mb-4 text-xl">
         <span className="text-blue-600 font-semibold  ">수면</span>
         <span> 중 데이터</span>
-        <div className="border-l-4 border-blue-600 bg-gray-100 p-4 rounded shadow-md">
-          {sleeplData.map((d) => (
-            <div className="w-[250px] h-[23px] relative">
-              <span className="left-0 top-[3px] absolute text-[#73777d] text-xs font-normal leading-[18px]">
-                {d.time.toLocaleTimeString()}
+        {/* <div className="border-l-4 border-blue-600 bg-gray-100 p-4 rounded shadow-md"> */}
+        <div className="border-l-4 border-blue-600 p-4 space-y-2">
+          {sleeplData.map((d, index) => (
+            <div key={index} className="h-[23px] flex relative items-center ">
+              {/* <span className="left-0 top-[3px] absolute text-[#73777d] text-xs font-normal leading-[18px]"> */}
+              <span className="ml-0 top-[3px] absolute text-[#73777d] text-xs font-normal leading-[18px]">
+                {d.time.toLocaleTimeString('ko-KR', {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
               </span>
-              <span className="left-[128px] top-0 absolute text-[#1c1c26] text-[15px] font-normal">
+              {/* <span className="left-[128px] top-0 absolute text-[#1c1c26] text-[15px] font-normal"> */}
+              <span className="ml-20 top-0 text-[#1c1c26] text-[15px] font-normal">
                 {d.detect} 발생
               </span>
             </div>
@@ -72,16 +79,22 @@ export const DataDetail = () => {
       </div>
 
       {/* 활동 중 데이터 */}
-      <div className=" text-lg sm:text-xl md:text-2xl">
+      <div className=" text-xl">
         <span className="text-yellow-600 font-semibold">활동</span>
         <span> 중 데이터</span>
-        <div className="border-l-4 border-yellow-600 bg-gray-100 p-4 rounded shadow-md">
+        {/* <div className="border-l-4 border-yellow-600 bg-gray-100 p-4 rounded shadow-md"> */}
+        <div className="border-l-4 border-yellow-600 p-4 space-y-2">
           {activeData.map((d, i) => (
-            <div key={i} className="w-[250px] h-[23px] relative">
-              <span className="left-0 top-[3px] absolute text-[#73777d] text-xs font-normal leading-[18px]">
-                {d.time.toLocaleTimeString()}
+            <div key={i} className="h-[23px] flex relative items-center">
+              {/* <span className="left-0 top-[3px] absolute text-[#73777d] text-xs font-normal leading-[18px]"> */}
+              <span className="ml-0 top-[3px] absolute text-[#73777d] text-xs font-normal leading-[18px]">
+                {d.time.toLocaleTimeString('ko-KR', {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
               </span>
-              <span className="left-[128px] top-0 absolute text-[#1c1c26] text-[15px] font-normal">
+              {/* <span className="left-[128px] top-0 absolute text-[#1c1c26] text-[15px] font-normal"> */}
+              <span className="ml-20 top-0 text-[#1c1c26] text-[15px] font-normal">
                 {d.detect} 발생
               </span>
             </div>

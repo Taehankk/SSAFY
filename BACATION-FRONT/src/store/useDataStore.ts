@@ -8,19 +8,31 @@ interface Data {
 }
 
 interface Store {
+  data: Data;
+  setData: (data: Data) => void;
+  addData: (data: Data) => void;
   axiosData: Data[];
   setAxiosData: (index: number, data: Data) => void;
   tempArr: Date[];
   setTempArr: (dateArr: Date[]) => void;
-  activeIndex: number | null;
-  setActiveIndex: (num: number | null) => void;
   selectDate: number;
   setSelectDate: (index: number) => void;
   scrollY: number;
   setScrollY: (num: number) => void;
+  activeIndex: number | null;
+  setActiveIndex: (num: number | null) => void;
+  openModal: boolean;
+  setOpenModal: () => void;
 }
 
 const useDataStore = create<Store>((set) => ({
+  data: {
+    startTime: new Date(2024, 7, 27, 0, 0),
+    finishTime: new Date(2024, 7, 27, 0, 0),
+    detectId: 0,
+    detect: '수면',
+  },
+  setData: (data) => set(() => ({ data: data })),
   axiosData: [
     {
       startTime: new Date(2024, 7, 27, 6, 0),
@@ -75,14 +87,20 @@ const useDataStore = create<Store>((set) => ({
     set((state) => ({
       axiosData: state.axiosData.map((d, i) => (i === index ? data : d)),
     })),
+  addData: (data) =>
+    set((state) => ({
+      axiosData: [...state.axiosData, data],
+    })),
   tempArr: [new Date()],
   setTempArr: (dateArr) => set(() => ({ tempArr: dateArr })),
-  activeIndex: null,
-  setActiveIndex: (num) => set(() => ({ activeIndex: num })),
   selectDate: 0,
   setSelectDate: (idx) => set(() => ({ selectDate: idx })),
   scrollY: 0,
   setScrollY: (num) => set(() => ({ scrollY: num })),
+  activeIndex: null,
+  setActiveIndex: (num) => set(() => ({ activeIndex: num })),
+  openModal: false,
+  setOpenModal: () => set((state) => ({ openModal: !state.openModal })),
 }));
 
 export default useDataStore;
