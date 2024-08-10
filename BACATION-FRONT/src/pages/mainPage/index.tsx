@@ -1,33 +1,38 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import logo from '../../assets/logo.png';
-import main from '../../assets/main/main.png';
-import play from '../../assets/main/play.png';
-import sleep from '../../assets/main/sleep.png';
+// import logo from '../../assets/logo.png';
+// import main from '../../assets/main/main.png';
+// import play from '../../assets/main/play.png';
+// import sleep from '../../assets/main/sleep.png';
 import moment from 'moment';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useUserStore } from '../../store/useUserStore';
 
 export const MainPage = () => {
   const navigate = useNavigate();
-  const [today, setToday] = useState(new Date());
+  const [today /*setToday*/] = useState(new Date());
+  const userInfo = useUserStore((state) => state.userInfo);
 
   return (
     <div className="m-5">
       <div className="my-5">
-        <img src={logo} alt="" className="w-44" />
+        <img src="https://bacation.s3.ap-northeast-2.amazonaws.com/frontImage/logo.png" alt="" className="w-44" />
       </div>
       <div className="flex justify-between place-items-baseline">
         <img
-          src="https://i1.sndcdn.com/artworks-nS5zU2ZseiW3oRgT-PjrnSw-t500x500.jpg"
+          src={
+            userInfo.profileImage ||
+            'https://bacation.s3.ap-northeast-2.amazonaws.com/frontImage/profile.jpg'
+          }
           alt="Profile-image"
           className="w-16 rounded-full mr-4"
         />
-        <img src={main} alt="" className="w-56" />
+        <img src="https://bacation.s3.ap-northeast-2.amazonaws.com/frontImage/main.png" alt="" className="w-56" />
       </div>
       <div className="mt-5 text-2xl font-semibold space-y-1">
         <p>
-          <span className="text-[#FD5900]">정채린</span>님,
+          <span className="text-[#FD5900]">{userInfo.nickname}</span>님,
         </p>
         <p>아이는 베케이션에 맡겨주세요!</p>
       </div>
@@ -37,7 +42,7 @@ export const MainPage = () => {
             <p className="text-white text-xl font-medium">활동 모드</p>
             <div className="flex space-x-2">
               <p className="text-white text-xl font-medium">켜기</p>
-              <img src={play} alt="" className="w-24 mt-4" />
+              <img src="https://bacation.s3.ap-northeast-2.amazonaws.com/frontImage/play.png" alt="" className="w-24 mt-4" />
             </div>
           </div>
         </Link>
@@ -46,7 +51,7 @@ export const MainPage = () => {
             <p className="text-white text-xl font-medium">수면 모드</p>
             <div className="flex space-x-2">
               <p className="text-white text-xl font-medium">켜기</p>
-              <img src={sleep} alt="" className="w-24 mt-4" />
+              <img src="https://bacation.s3.ap-northeast-2.amazonaws.com/frontImage/sleep.png" alt="" className="w-24 mt-4" />
             </div>
           </div>
         </Link>

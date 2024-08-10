@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
@@ -103,19 +103,33 @@ const StyledCalendar = styled(Calendar)`
   }
 `;
 
+type ValuePiece = Date | null;
+type Value = ValuePiece | [ValuePiece, ValuePiece];
+
 const DiaryCalendar = () => {
-  const [value, setValue] = useState(new Date());
+  const [value, onChange] = useState<ValuePiece>(new Date());
+  const handleDateChange = (selectedDate: Value) => {
+    if (Array.isArray(selectedDate)) {
+      onChange(selectedDate[0]);
+    } else {
+      onChange(selectedDate);
+    }
+  };
 
   return (
     <div>
       <div className="grid place-items-center mx-auto">
         <StyledCalendar
-          onChange={setValue}
+          onChange={handleDateChange}
           value={value}
-          formatDay={(locale, date) => moment(date).format('DD')}
+          formatDay={(_locale, date) => moment(date).format('DD')}
         />
       </div>
-      <DiaryView date={value} />
+      {value !== null ? (
+        <DiaryView date={moment(value).format('YYYY-MM-DD')} />
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

@@ -1,11 +1,10 @@
-import { add, format } from 'date-fns';
-import { ko } from 'date-fns/locale';
+import { add } from 'date-fns';
 import { useEffect, useRef, useState } from 'react';
 import useDataStore from '../../../store/useDataStore';
+import { DateFormat } from '../../molecules/dateFormat';
 
 const Day = () => {
   // 선택한 날짜 저장
-  const selectDate = useDataStore((state) => state.selectDate);
   const setSelectDate = useDataStore((state) => state.setSelectDate);
 
   // 현재 스크롤 위치값 저장
@@ -13,7 +12,12 @@ const Day = () => {
   const setScrollPosition = useDataStore((state) => state.setScrollY);
 
   // 오늘 날짜 저장
-  const currentDay = new Date();
+  const today = new Date();
+  const currentDay = new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate(),
+  );
 
   // 무한 스크롤에 들어가는 날짜들
   // 오늘 날짜 기준 이전 1주일을 미리 저장
@@ -43,9 +47,9 @@ const Day = () => {
   }
 
   // 스크롤 영역 저장 변수
-  const scrollAreaRef = useRef(null);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
   // 데이터를 추가해야할 때를 체크하기위한 위치 저장 변수
-  const sentinelRef = useRef(null);
+  const sentinelRef = useRef<HTMLDivElement>(null);
 
   // 날짜를 추가하는 함수
   // 현재까지 저장된 날짜의 이전 날을 추가
@@ -56,9 +60,9 @@ const Day = () => {
 
   // 날짜 선택 시 발동 함수
   // 선택 시, tempArr에 선택 날짜까지 저장, 스크롤 위치 저장
-  const clickDate = (event, idx: number) => {
+  const clickDate = (idx: number) => {
     setSelectDate(idx);
-    const position = scrollAreaRef.current.scrollLeft;
+    const position = scrollAreaRef.current?.scrollLeft ?? 0;
     setTempArr(dateArr.slice(0, idx + 1));
     setScrollPosition(position);
   };
@@ -93,7 +97,8 @@ const Day = () => {
   // scrollPosition에 저장된 위치를 scrollLeft 값에 저장
   useEffect(() => {
     if (scrollPosition !== 0 && scrollAreaRef.current) {
-      scrollAreaRef.current.scrollLeft = scrollPosition;
+      const scrollLeft = scrollPosition ?? 0; // scrollPosition이 undefined일 경우 0으로 대체
+      scrollAreaRef.current.scrollLeft = scrollLeft;
     }
   }, [scrollPosition]);
 
@@ -114,21 +119,12 @@ const Day = () => {
         >
           {/* date 배열을 돌면서 날짜 형식 출력 */}
           {dateArr.map((date, idx) => (
-            <div
+            <DateFormat
               key={idx}
-              className={`date-item text-center h-24 flex-col content-center p-2 rounded-lg shadow mx-1 ${idx === selectDate ? 'bg-orgBg2 text-white font-bold' : ' bg-white'}`}
-              onClick={(event) => clickDate(event, idx)}
-            >
-              <span className="block text-base sm:text-lg lg:text-xl">
-                {format(date, 'M')}
-              </span>
-              <span className="block text-base sm:text-lg lg:text-xl">
-                {format(date, 'dd')}
-              </span>
-              <span className="block w-14 text-base sm:text-lg lg:text-xl">
-                {format(date, 'E', { locale: ko })}
-              </span>
-            </div>
+              idx={idx}
+              date={date}
+              onClick={() => clickDate(idx)}
+            />
           ))}
           {/* 스크롤의 끝에 감시하는 부분, 다 보이면 배열에 날짜 추가 */}
           <div ref={sentinelRef} className="h-4 w-full"></div>

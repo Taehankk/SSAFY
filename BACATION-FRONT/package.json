@@ -18,9 +18,12 @@
     "@fortawesome/free-regular-svg-icons": "^6.6.0",
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@fortawesome/react-fontawesome": "^0.2.2",
-    "@tanstack/react-query": "^5.51.9",
+    "@tanstack/react-query": "^5.51.23",
     "axios": "^1.7.3",
     "date-fns": "^3.6.0",
+    "file-saver": "^2.0.5",
+    "html2canvas": "^1.4.1",
+    "firebase": "^10.4.0",
     "moment": "^2.30.1",
     "react": "^18.3.1",
     "react-calendar": "^5.0.0",
@@ -30,7 +33,20 @@
     "react-time-picker": "^7.0.0",
     "styled-components": "^6.1.12",
     "victory": "^37.0.2",
-    "zustand": "^4.5.4"
+    "workbox-background-sync": "^5.1.4",
+    "workbox-broadcast-update": "^5.1.4",
+    "workbox-cacheable-response": "^5.1.4",
+    "workbox-core": "^5.1.4",
+    "workbox-expiration": "^5.1.4",
+    "workbox-google-analytics": "^5.1.4",
+    "workbox-navigation-preload": "^5.1.4",
+    "workbox-precaching": "^5.1.4",
+    "workbox-range-requests": "^5.1.4",
+    "workbox-routing": "^5.1.4",
+    "workbox-strategies": "^5.1.4",
+    "workbox-streams": "^5.1.4",
+    "zustand": "^4.5.4",
+    "openvidu-browser": "2.30.0"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^1.6.1",
@@ -42,6 +58,7 @@
     "@storybook/react": "^8.2.4",
     "@storybook/react-vite": "^8.2.4",
     "@storybook/test": "^8.2.4",
+    "@types/file-saver": "^2.0.7",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.15.0",
@@ -57,6 +74,11 @@
     "storybook": "^8.2.4",
     "tailwindcss": "^3.4.6",
     "typescript": "^5.2.2",
-    "vite": "^5.3.4"
+    "vite": "^5.3.4",
+    "@teachablemachine/pose": "^0.8.6",
+    "@tensorflow/tfjs": "^3.7.0",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0"
   }
 }

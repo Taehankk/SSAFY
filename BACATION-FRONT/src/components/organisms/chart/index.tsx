@@ -5,46 +5,81 @@ import {
   VictoryTheme,
   VictoryLegend,
 } from 'victory';
-import { TimeData } from '../chartModal';
-import { addMinutes, differenceInMinutes } from 'date-fns';
-
-import useDataStore from '../../../store/useDataStore';
+import { ChartModal } from '../chartModal';
+import { addMinutes, differenceInMinutes, format } from 'date-fns';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 
+import useDataStore from '../../../store/useDataStore';
+import useModalStore from '../../../store/useChartModalStore';
+import { useEffect } from 'react';
+import axios from 'axios';
+
 export const ChartData = () => {
-  const axiosData = useDataStore((state) => state.axiosData);
-  const data = axiosData.map((d, i) => ({
+  // 차트에 불러올 데이터 저장 변수
+  const dayData = useDataStore((state) => state.dayData);
+  const setDayData = useDataStore((state) => state.setDayData);
+
+  // 선택된 날짜의 배열 인덱스
+  const selectDate = useDataStore((state) => state.selectDate);
+  // 임시 저장된 날짜 배열
+  const tempArr = useDataStore((state) => state.tempArr);
+  // 선택된 날짜 포맷
+  const selected = format(tempArr[selectDate], 'yyyy-MM-dd');
+
+  useEffect(() => {
+    axios
+      .get('https://i11b307.p.ssafy.io:8081/api/v1/data/list', {
+        params: { dateTime: selected },
+      })
+      .then((response) => {
+        setDayData(response.data);
+      })
+      .catch((error) => {
+        console.log('데이터를 받아오지 못했습니다.');
+        console.log(error);
+      });
+  }, [selected, setDayData, dayData.length]);
+
+  // 차트에 그릴 값으로 변환
+  const data = dayData.map((d) => ({
     x:
       differenceInMinutes(
         addMinutes(
-          d.startTime,
-          differenceInMinutes(d.finishTime, d.startTime) / 2,
+          d.modeStartTime,
+          differenceInMinutes(d.modeEndTime, d.modeStartTime) / 2,
         ),
-        new Date(2024, 7, 27),
+        tempArr[selectDate],
       ) / 60,
     y: 24,
-    time: differenceInMinutes(d.finishTime, d.startTime) / 60,
-    detectId: d.detectId,
+    time: differenceInMinutes(d.modeEndTime, d.modeStartTime) / 60,
+    detectId: d.mode,
   }));
 
-  // const activeIndex = useDataStore((state) => state.activeIndex);
+  // 선택한 차트 파이 부분의 index 저장 변수
   const setActiveIndex = useDataStore((state) => state.setActiveIndex);
 
-  const openModal = useDataStore((state) => state.openModal);
-  const setOpenModal = useDataStore((state) => state.setOpenModal);
+  // modal 창 open 여부 boolean 변수
+  const openModal = useModalStore((state) => state.openModal);
+  const setOpenModal = useModalStore((state) => state.setOpenModal);
 
   return (
     <div className="w-full flex items-center justify-center bg-white-100">
       <div className="bg-white p-6">
+        {/* 기록 자세히 보기 창으로 넘어가는 button */}
         <div className="float-right">
           <Link
-            className="text-black text-sm"
-            to={`/data/${new Date().getHours()}`}
+            className="text-black text-sm hover:text-[#FD5900]"
+            to={'/data/detail'}
           >
-            기록 자세히 보기▶
+            기록 자세히 보기
+            <FontAwesomeIcon icon={faAngleRight} className="ml-2" />
           </Link>
         </div>
-        <div className="">
+
+        {/* 차트 부분 */}
+        <div>
           <VictoryChart
             polar
             theme={VictoryTheme.material}
@@ -52,8 +87,8 @@ export const ChartData = () => {
             startAngle={90}
             endAngle={-270}
           >
+            {/* LEGEND */}
             <VictoryLegend
-              x={-10}
               y={280}
               style={{ border: { stroke: 'none' } }}
               data={[
@@ -62,6 +97,8 @@ export const ChartData = () => {
                 { name: '수유', symbol: { fill: '#F2B6C6', type: 'square' } },
               ]}
             />
+
+            {/* Axis 축 세팅(시계처럼) */}
             <VictoryPolarAxis
               tickValues={[0, 3, 6, 9, 12, 15, 18, 21]}
               labelPlacement="vertical"
@@ -74,14 +111,17 @@ export const ChartData = () => {
                 grid: { stroke: 'none' },
               }}
             />
+
+            {/* 파이 차트 축에 맞게 삽입 */}
+            {/* 파이 차트 클릭 시, 해당 파이 수정 모달 open */}
             <VictoryBar
               data={data}
               style={{
                 data: {
                   fill: ({ datum }) =>
-                    datum.detectId === 0
+                    datum.detectId === 1
                       ? '#3864A7'
-                      : datum.detectId === 1
+                      : datum.detectId === 0
                         ? '#FDDC3F'
                         : '#F2B6C6',
                   width: ({ datum }) => (datum.time / 24) * 400,
@@ -91,13 +131,9 @@ export const ChartData = () => {
                 {
                   target: 'data',
                   eventHandlers: {
-                    onClick: (event, props) => {
-                      //   if (activeIndex === props.index) {
-                      //     setActiveIndex(null);
-                      //   } else {
+                    onClick: (_, props) => {
                       setActiveIndex(props.index);
                       setOpenModal();
-                      // }
                       return [];
                     },
                   },
@@ -107,9 +143,11 @@ export const ChartData = () => {
           </VictoryChart>
         </div>
       </div>
+
+      {/* modal open 시, TimeData 오픈 */}
       {openModal && (
         <div className="absolute flex items-center justify-center">
-          <TimeData />
+          <ChartModal />
         </div>
       )}
     </div>
